@@ -18,5 +18,8 @@
   "license": "CC0-1.0",
   "devDependencies": {
     "electron": "^9.0.2"
+  },
+  "dependencies": {
+    "node-ios-device": "^2.0.2"
   }
 }

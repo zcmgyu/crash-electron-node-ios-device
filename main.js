@@ -1,8 +1,9 @@
 // Modules to control application life and create native browser window
-const {app, BrowserWindow} = require('electron')
+const { app, BrowserWindow } = require('electron')
 const path = require('path')
+const iosDevice = require('node-ios-device')
 
-function createWindow () {
+function createWindow() {
   // Create the browser window.
   const mainWindow = new BrowserWindow({
     width: 800,
@@ -17,6 +18,14 @@ function createWindow () {
 
   // Open the DevTools.
   // mainWindow.webContents.openDevTools()
+  // continuously watch for devices to be connected or disconnected
+  const handle = iosDevice.watch();
+  handle.on('change', devices => {
+    console.log('Connected devices:', devices);
+  });
+  handle.on('error', console.error);
+
+  iosDevice.on('log', msg => console.log(msg));
 }
 
 // This method will be called when Electron has finished
@@ -24,7 +33,7 @@ function createWindow () {
 // Some APIs can only be used after this event occurs.
 app.whenReady().then(() => {
   createWindow()
-  
+
   app.on('activate', function () {
     // On macOS it's common to re-create a window in the app when the
     // dock icon is clicked and there are no other windows open.
