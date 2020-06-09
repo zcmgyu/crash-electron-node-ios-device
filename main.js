@@ -1,7 +1,7 @@
 // Modules to control application life and create native browser window
 const { app, BrowserWindow } = require('electron')
 const path = require('path')
-const iosDevice = require('node-ios-device')
+const iosDevice = require('node-ios-device');
 
 function createWindow() {
   // Create the browser window.
@@ -18,14 +18,16 @@ function createWindow() {
 
   // Open the DevTools.
   // mainWindow.webContents.openDevTools()
-  // continuously watch for devices to be connected or disconnected
-  const handle = iosDevice.watch();
-  handle.on('change', devices => {
-    console.log('Connected devices:', devices);
-  });
-  handle.on('error', console.error);
 
-  iosDevice.on('log', msg => console.log(msg));
+  // get all connected iOS devices
+  iosDevice.devices(function (err, devices) {
+    if (err) {
+      console.error('Error!', err);
+    } else {
+      console.log('Connected devices:');
+      console.log(devices);
+    }
+  });
 }
 
 // This method will be called when Electron has finished
